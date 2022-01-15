@@ -10,8 +10,7 @@ hosting+domino;12-1;70
 Este ejemplo envia un correo y la factura con el producto hosting+dominio todos los 12 de enero y con un importe de 70€ + IVA
 
 Lo usamos para el envio de las facturas de servicios anuales tales como hosting, dominio, correo...
-
-Cambiad issued para generación de factura(true) o presupuesto(false)
+Campo issued para generación de factura(true) o presupuesto(false)
 
 La única dependencia es requests
 
