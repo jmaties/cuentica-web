@@ -62,7 +62,7 @@ class MainWeb:
         if len(lastinvoice) == 2:
             print('FACTURA Y CORREO')
             invoice = self.post_invoice(bodyData)
-            mail = self.post_email(id, bodyCorreo)
+            if (facturacion): mail = self.post_email(id, bodyCorreo)
         else:
             print('NADA')
  
