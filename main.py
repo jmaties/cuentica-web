@@ -26,11 +26,15 @@ class MainWeb:
 
             if now == dato[1]:
                 fecha = str(currentYear)+'-'+str(currentMonth)+'-'+str(currentDay)
-                self.send_invoice(customer['id'], fecha, customer['email'], dato[0], dato[2])
+                factura = False
+                if 3 < len(dato): factura = dato[3]
+                self.send_invoice(customer['id'], fecha, customer['email'], dato[0], dato[2], factura)
 
-    def send_invoice(self, id, fecha, correo, tipo, precio):
+    def send_invoice(self, id, fecha, correo, tipo, precio, factura):
         false = False
         true = True
+        facturacion = False
+        if factura == 'factura': facturacion = True
         lastinvoice = self.get_last_invoice(id, fecha)
         sin_iva = float(precio)
         tax = float('21.0')
@@ -39,7 +43,7 @@ class MainWeb:
             'description':'Factura WEB',
             'annotations':'Factura enviada automáticamente',
             'date': fecha,
-            'issued': false,
+            'issued': facturacion,
             'customer':id,
             'invoice_lines':[
                 {'quantity':1,'concept':'Renovación anual de ' + tipo,'amount':sin_iva,'discount':0,'tax':tax,'surcharge':0,'retention':0}],
