@@ -13,6 +13,6 @@ Este ejemplo envia un correo y la factura con el producto hosting+dominio todos 
 Lo usamos para el envio de las facturas de servicios anuales tales como hosting, dominio, correo...
 Campo issued para generación de factura(true) o presupuesto(false)
 
-La única dependencia es requests
+Dependencias: requests, sendgrid
 
 En el archivo .env indicar el token de la api de Cuéntica
