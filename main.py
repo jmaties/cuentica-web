@@ -73,7 +73,7 @@ class MainWeb:
             print('FACTURA Y CORREO')
             invoice = self.post_invoice(bodyData)
             datos_invoice = json.loads(invoice)
-            mail = self.post_email(datos_invoice['id'], bodyCorreo)
+            if facturacion: mail = self.post_email(datos_invoice['id'], bodyCorreo)
             print(mail)
         else:
             print('NADA')
