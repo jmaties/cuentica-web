@@ -1,19 +1,21 @@
 import requests
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
+from decouple import config
 
 #Variables
 url = 'https://api.cuentica.com'
-token = os.environ.get("token")
+token = config('TOKEN')
 payload={}
+notice_days = 15
 
 class MainWeb:
     def __init__(self) -> None:
         data = self.get_customer()
         customers = json.loads(data)
         for customer in customers:
-            if customer['personal_comment']: self.test_invoice(customer)
+           if customer['personal_comment']: self.test_invoice(customer)
     
     #Acciones
     def test_invoice(self, customer):
@@ -22,7 +24,14 @@ class MainWeb:
             currentDay = datetime.now().day
             currentMonth = datetime.now().month
             currentYear = datetime.now().year
+
             now = str(currentDay) + '-' + str(currentMonth)
+            fecha_tmp = datetime.strptime(dato[1]+'-'+str(currentYear), '%d-%m-%Y')
+            aviso_tmp = fecha_tmp - timedelta(days=notice_days)
+            aviso = str(aviso_tmp.day)+'-'+str(aviso_tmp.month)
+
+            # if now == aviso:
+            #     print('ENVIO CORREO')
 
             if now == dato[1]:
                 fecha = str(currentYear)+'-'+str(currentMonth)+'-'+str(currentDay)
@@ -56,19 +65,25 @@ class MainWeb:
             'reply_to': 'somos@cariz.studio',
             'to':[correo, 'somos@cariz.studio'],
             'include_pdf': true,
-            'show_card_payment': true
+            'show_card_payment': false
         }
 
         if len(lastinvoice) == 2:
             print('FACTURA Y CORREO')
             invoice = self.post_invoice(bodyData)
-            if (facturacion): mail = self.post_email(id, bodyCorreo)
+            datos_invoice = json.loads(invoice)
+            mail = self.post_email(datos_invoice['id'], bodyCorreo)
+            print(mail)
         else:
             print('NADA')
+
+    def send_notice(self):
+        print("CORREO 15 dias")
  
 
     #API
     def get_customer(self):
+        payload={}
         headers = {'X-AUTH-TOKEN': token}
         response = requests.request("GET", url+'/customer', headers=headers, data=payload)
         return response.text
@@ -82,7 +97,7 @@ class MainWeb:
         payload = json.dumps(bodyData)
         headers = {'X-AUTH-TOKEN': token, 'Content-Type': 'application/json'}
         response = requests.request("POST", url+'/invoice', headers=headers, data=payload)
-        return response
+        return response.text
 
     def post_email(self, id, bodyData):
         payload = json.dumps(bodyData)
