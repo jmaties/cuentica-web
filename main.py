@@ -1,7 +1,7 @@
 import requests
 import json
 from datetime import datetime, timedelta
-import os
+import Notice as notice
 from decouple import config
 
 #Variables
@@ -9,6 +9,7 @@ url = 'https://api.cuentica.com'
 token = config('TOKEN')
 payload={}
 notice_days = 15
+account = 47393
 
 class MainWeb:
     def __init__(self) -> None:
@@ -30,8 +31,8 @@ class MainWeb:
             aviso_tmp = fecha_tmp - timedelta(days=notice_days)
             aviso = str(aviso_tmp.day)+'-'+str(aviso_tmp.month)
 
-            # if now == aviso:
-            #     print('ENVIO CORREO')
+            if now == aviso:
+                self.send_notice(customer['email'], dato[2])
 
             if now == dato[1]:
                 fecha = str(currentYear)+'-'+str(currentMonth)+'-'+str(currentDay)
@@ -56,7 +57,7 @@ class MainWeb:
             'customer':id,
             'invoice_lines':[
                 {'quantity':1,'concept':'Renovación anual de ' + tipo,'amount':sin_iva,'discount':0,'tax':tax,'surcharge':0,'retention':0}],
-            'charges':[{'date':fecha,'amount':total,'method':'cash','destination_account':47393,'origin_account':'CUENTA','charged':false}]
+            'charges':[{'date':fecha,'amount':total,'method':'cash','destination_account':account,'origin_account':'CUENTA','charged':false}]
         }
 
         bodyCorreo = {
@@ -77,8 +78,8 @@ class MainWeb:
         else:
             print('NADA')
 
-    def send_notice(self):
-        print("CORREO 15 dias")
+    def send_notice(self, correo, tipo):
+        notice.Send.mail_15(self, correo, tipo)
  
 
     #API
