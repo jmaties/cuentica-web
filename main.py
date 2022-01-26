@@ -32,15 +32,15 @@ class MainWeb:
             aviso = str(aviso_tmp.day)+'-'+str(aviso_tmp.month)
 
             if now == aviso:
-                self.send_notice(customer['email'], dato[2])
+                self.send_notice(customer['email'], dato[0], customer['contact_person'], dato[2])
 
             if now == dato[1]:
                 fecha = str(currentYear)+'-'+str(currentMonth)+'-'+str(currentDay)
                 factura = False
                 if 3 < len(dato): factura = dato[3]
-                self.send_invoice(customer['id'], fecha, customer['email'], dato[0], dato[2], factura)
+                self.send_invoice(customer['id'], fecha, customer['email'], dato[0], dato[2], factura, customer['contact_person'])
 
-    def send_invoice(self, id, fecha, correo, tipo, precio, factura):
+    def send_invoice(self, id, fecha, correo, tipo, precio, factura, name):
         false = False
         true = True
         facturacion = False
@@ -61,8 +61,8 @@ class MainWeb:
         }
 
         bodyCorreo = {
-            'body': 'Aqui llevas tu factura por todo lo que hemos hecho',
-            'subject': 'La factura!!!',
+            'body': 'Hola '+name+'.\n\nAquí te hacemos llegar la factura de renovación anual de '+tipo+'.\n\nMuchas gracias por seguir confiando en nosotros y saludos.\n\ncariz.studio',
+            'subject': 'Factura de servicios',
             'reply_to': 'somos@cariz.studio',
             'to':[correo, 'somos@cariz.studio'],
             'include_pdf': true,
@@ -78,8 +78,8 @@ class MainWeb:
         else:
             print('NADA')
 
-    def send_notice(self, correo, tipo):
-        notice.Send.mail_15(self, correo, tipo)
+    def send_notice(self, correo, tipo, nombre, precio):
+        notice.Send.mail_15(self, correo, tipo, nombre, precio)
  
 
     #API
