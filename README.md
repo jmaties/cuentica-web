@@ -1,6 +1,6 @@
 # cuentica-web
 
-Aplicación web para enviar facturas y correo electrónico a cliente con [Cuéntica](https://cuentica.com) a través de su [API](https://apidocs.cuentica.com/) de forma recurrente a traves de una tarea cron.
+Aplicación web para enviar facturas y correo electrónico a cliente con [Cuéntica](https://cuentica.com) a través de su [API](https://apidocs.cuentica.com/) de forma recurrente mediante una tarea cron.
 
 Usa el campo "personal_comment" de customer para indicar: 
 tipo de producto;precio (sin iva;fecha de la recurrencia (dia-mes);factura o presupuesto
