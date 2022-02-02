@@ -14,6 +14,6 @@ Además, envia un correo 15 días antes avisando al cliente de la próxima renov
 Lo usamos para el envio de las facturas de servicios anuales tales como hosting, dominio, correo...
 Campo issued para generación de factura(true) o presupuesto(false)
 
-Dependencias: requests, sendgrid
+Dependencias: requests, sendgrid, python-decouple
 
 En el archivo .env indicar el token de la api de Cuéntica
