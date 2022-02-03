@@ -9,7 +9,7 @@ url = 'https://api.cuentica.com'
 token = config('TOKEN')
 payload={}
 notice_days = 15
-account = 47393
+account = 47393 # Cuenta bancaria 35657
 
 class MainWeb:
     def __init__(self) -> None:
