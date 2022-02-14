@@ -9,6 +9,7 @@ url = 'https://api.cuentica.com'
 token = config('TOKEN')
 payload={}
 notice_days = 15
+pay_days = 30
 account = 47393 # Cuenta bancaria 35657
 
 class MainWeb:
@@ -49,6 +50,9 @@ class MainWeb:
         sin_iva = float(precio)
         tax = float('21.0')
         total = (sin_iva * tax / 100) + sin_iva
+        ini_time_for_now = datetime.now()
+        time_pay = ini_time_for_now + timedelta(days = pay_days)
+        fecha_cobro = str(time_pay.year)+'-'+str(time_pay.month)+'-'+str(time_pay.day)
         bodyData = {
             'description':'Factura WEB',
             'annotations':'Factura enviada automáticamente',
@@ -57,7 +61,8 @@ class MainWeb:
             'customer':id,
             'invoice_lines':[
                 {'quantity':1,'concept':'Renovación anual de ' + tipo,'amount':sin_iva,'discount':0,'tax':tax,'surcharge':0,'retention':0}],
-            'charges':[{'date':fecha,'amount':total,'method':'cash','destination_account':account,'origin_account':'CUENTA','charged':false}]
+                'charges':[{'date':fecha_cobro,'amount':total,'method':'wire_transfer','destination_account':account,'origin_account':'CUENTA','charged':false}
+            ]
         }
 
         bodyCorreo = {
